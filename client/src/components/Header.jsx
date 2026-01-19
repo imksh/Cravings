@@ -6,6 +6,7 @@ import transparentLogo from "../assets/images/transparentLogo.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import rider from "../assets/animations/rider.json";
 import Lottie from "lottie-react";
+import useWindowSize from "../hooks/useWindowSize";
 
 const Header = () => {
   const [show, setShow] = useState();
@@ -13,6 +14,7 @@ const Header = () => {
   const lastScrollY = React.useRef(0);
   const navigate = useNavigate();
   const location = useLocation().pathname;
+  const size = useWindowSize();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +43,9 @@ const Header = () => {
         showHeader ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className={`w-fit absolute -top-2.5 left-[8.5vw] ride-x`}>
+      <div
+        className={`w-fit absolute -top-2.5 left-[8.5vw] ${size.width > 500 ? "ride-x" : "ride-phone-x"} `}
+      >
         <Lottie
           animationData={rider}
           className="w-10 hover:scale-110 duration-100"

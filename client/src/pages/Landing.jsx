@@ -235,7 +235,7 @@ const Landing = () => {
             </h2>
             <motion.div
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 1 }}
+              whileTap={{ scale: 0.9 }}
               className="absolute right-0 translate-x-full"
             >
               <Lottie animationData={lazy} className="w-32 sm:w-40 " />
@@ -256,7 +256,7 @@ const Landing = () => {
                     ? { x: [5, 0, -5, 0], y: [5, 0, -5, 0], scale: 1.2 }
                     : { x: 0, y: 0 }
                 }
-                whileTap={{ scale: 1 }}
+                whileTap={{ scale: 0.9 }}
                 className=""
               >
                 <FaSearch />
@@ -274,14 +274,14 @@ const Landing = () => {
           <div className="flex gap-5 my-4  mx-auto sm:mx-0">
             <motion.button
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 1 }}
+              whileTap={{ scale: 0.9 }}
               className="bg-(--primary) text-white p-4 md:px-10 rounded-xl hover:bg-(--accent) cursor-pointer"
             >
               Get Started
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 1 }}
+              whileTap={{ scale: 0.9 }}
               className="border border-(--primary) p-4 md:px-10 rounded-xl hover:bg-(--secondary) hover:text-white cursor-pointer"
             >
               About us
@@ -354,7 +354,7 @@ const Landing = () => {
         >
           <motion.div
             whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 1 }}
+            whileTap={{ scale: 0.9 }}
             className="relative md:absolute -left-8 md:-left-16"
           >
             <Lottie
@@ -455,7 +455,11 @@ const Landing = () => {
         initial={{ scale: 0.6 }}
         whileInView={{ scale: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        viewport={{ once: true, amount: 0.3, margin: "-200px" }}
+        viewport={{
+          once: true,
+          amount: 0.3,
+          margin: size.width > 500 ? "-200px" : "-50px",
+        }}
         onViewportEnter={() => {
           const anim = pizzaRef.current;
 
@@ -513,7 +517,7 @@ const Landing = () => {
             {menuTabs.map((item, indx) => (
               <motion.button
                 whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 1 }}
+                whileTap={{ scale: 0.9 }}
                 key={indx}
                 className={`border py-2 px-4 sm:px-8 md:px-4 lg:px-8 rounded-2xl border-slate-300 cursor-pointer  ${
                   item === currMenu
@@ -561,8 +565,8 @@ const Landing = () => {
               Get the Best promos order now before the ran out!
             </h2>
             <p className="text-gray-300 text-[12px] my-2">
-              Get the best promos from us just for you and we always{" "}
-              provide the best service for you. Order no at Cravings
+              Get the best promos from us just for you and we always provide the
+              best service for you. Order no at Cravings
             </p>
           </div>
           <img
@@ -606,7 +610,7 @@ const Landing = () => {
           </div>
           <motion.button
             whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 1 }}
+            whileTap={{ scale: 0.9 }}
             className="rounded-2xl border border-black px-6 py-2 bg-black text-white hover:text-white hover:bg-(--primary) hover:border-white cursor-pointer w-fit my-4 mx-auto"
           >
             Book Now

@@ -69,11 +69,17 @@ const Testimonials = () => {
           alt=""
           className="w-50 sm:w-80 rounded-full border border-(--primary)"
         />
-        <Lottie
-          animationData={LottieBurger}
-          loop
-          className=" absolute w-28  sm:w-40 z-40 right-0 translate-x-[50%] top-0"
-        />
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className=" absolute z-40 right-0 translate-x-[50%] top-0 w-fit"
+        >
+          <Lottie
+            animationData={LottieBurger}
+            loop
+            className=" w-28  sm:w-40"
+          />
+        </motion.div>
       </div>
 
       <div className="mb-2 sm:mb-0 text-center sm:text-left sm:w-[80%] mx-auto">
@@ -125,3 +131,4 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
+
