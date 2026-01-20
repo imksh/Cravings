@@ -17,7 +17,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://10.53.203.71:5173"],
+    origin: [
+      "http://localhost:5173",
+      "http://10.53.203.71:5173",
+      "https://imksh-cravings.netlify.app",
+    ],
     credentials: true,
   }),
 );
