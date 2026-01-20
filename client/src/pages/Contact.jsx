@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 const Contact = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     phone: "",
     message: "",
@@ -47,7 +47,7 @@ const Contact = () => {
   const handleReset = (e) => {
     e.preventDefault();
     setData({
-      fullName: "",
+      name: "",
       email: "",
       phone: "",
       message: "",
@@ -73,9 +73,9 @@ const Contact = () => {
           <div className="w-full  flex flex-col">
             <input
               type="text"
-              name="fullName"
-              id="fullName"
-              value={data.fullName}
+              name="name"
+              id="name"
+              value={data.name}
               onChange={(e) => handleChange(e)}
               className="border p-4  rounded-xl border-gray-300 disabled:bg-gray-200 disabled:cursor-not-allowed   w-full"
               required

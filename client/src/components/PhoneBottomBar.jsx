@@ -1,12 +1,12 @@
 import React from "react";
 import { FaHome } from "react-icons/fa";
-import { FaCartShopping } from "react-icons/fa6";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { motion } from "motion/react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { RiShoppingBag4Fill } from "react-icons/ri";
 
-const PhoneHeader = () => {
+const PhoneBottomBar = () => {
   const navigate = useNavigate();
   const location = useLocation().pathname;
   return (
@@ -27,7 +27,7 @@ const PhoneHeader = () => {
         className={`${location === "/cart" ? "text-(--primary)" : ""}`}
         onClick={() => navigate("/cart")}
       >
-        <FaCartShopping size={28} />
+        <RiShoppingBag4Fill size={28} />
       </motion.button>
       <motion.button
         className={`${location === "/profile" ? "text-(--primary)" : ""}`}
@@ -39,4 +39,4 @@ const PhoneHeader = () => {
   );
 };
 
-export default PhoneHeader;
+export default PhoneBottomBar;

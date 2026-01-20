@@ -9,15 +9,16 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 const Login = () => {
+  const { login, isLogging } = useAuthStore();
   const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
   const [showPass, setShowPass] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
 
   const handleChange = (e) => {
@@ -28,21 +29,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setIsLoading(true);
-
-      console.log(data);
-      const res = await api.post("/auth/login", data);
-      console.log("Message: ", res.data.message);
-      console.log("Data: ", res.data.data);
-      toast.success("Login successfully");
+      const res = await login(data);
       handleReset(e);
-      navigate("/user-dashboard");
-      setShowAnimation(true);
+      if (res) {
+        setShowAnimation(true);
+        navigate("/user-dashboard");
+      }
     } catch (error) {
       console.log("Error in login: ", error);
-      toast.error(error?.response?.data?.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -52,7 +46,6 @@ const Login = () => {
       email: "",
       password: "",
     });
-
     setShowAnimation(false);
   };
 
@@ -61,7 +54,7 @@ const Login = () => {
       <img src={transparentLogo} className="w-30" />
       <p className="my-5">You are 1 step away from stoping your cravings</p>
       <form
-        className="w-[90%] md:w-[40%] px-4 py-8 md:px-16 rounded-2xl flex flex-col gap-2 shadow-2xl bg-white"
+        className="w-[90%] sm:w-[60%] lg:w-[40%] px-4 py-8 md:px-16 rounded-2xl flex flex-col gap-2 shadow-2xl bg-white"
         onSubmit={(e) => handleSubmit(e)}
         onReset={(e) => handleReset(e)}
       >
@@ -78,7 +71,7 @@ const Login = () => {
               onChange={(e) => handleChange(e)}
               className="border p-4  rounded-xl border-gray-300 disabled:bg-gray-200 disabled:cursor-not-allowed   w-full"
               required
-              disabled={isLoading}
+              disabled={isLogging}
               placeholder="Email"
             />
           </div>
@@ -92,7 +85,7 @@ const Login = () => {
               placeholder="Enter your password"
               value={data.password}
               required
-              disabled={isLoading}
+              disabled={isLogging}
               onChange={(e) => handleChange(e)}
             />
             <button
@@ -113,9 +106,9 @@ const Login = () => {
           <motion.button
             className={`w-[50%] py-4 bg-blue-500 hover:bg-blue-700 text-white cursor-pointer  mx-auto rounded-lg hover:scale-105 disabled:scale-100 disabled:bg-gray-400 disabled:cursor-not-allowed items-center justify-center flex `}
             type="submit"
-            disabled={isLoading}
+            disabled={isLogging}
           >
-            {!isLoading ? (
+            {!isLogging ? (
               "Submit"
             ) : (
               <motion.div

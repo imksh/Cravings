@@ -25,6 +25,7 @@ import Footer from "../components/Footer";
 import LandingFood from "../components/LandingFood";
 import Testimonials from "../components/Testimonials";
 import useWindowSize from "../hooks/useWindowSize";
+import { useNavigate } from "react-router-dom";
 
 const menuItem = [
   // ---------------- BREAKFAST ----------------
@@ -120,7 +121,7 @@ const menuItem = [
     price: 92.5,
     rating: 4.7,
     reviews: "22k Reviews",
-    image: "8",
+    image: "9",
   },
   {
     id: 10,
@@ -130,7 +131,7 @@ const menuItem = [
     price: 74.9,
     rating: 4.6,
     reviews: "19k Reviews",
-    image: "9",
+    image: "10",
   },
   {
     id: 11,
@@ -140,7 +141,7 @@ const menuItem = [
     price: 88.6,
     rating: 4.5,
     reviews: "17k Reviews",
-    image: "10",
+    image: "4",
   },
   {
     id: 12,
@@ -204,6 +205,7 @@ const Landing = () => {
   const [curr, setCurr] = useState("");
   const pizzaRef = useRef();
   const [currMenu, setCurrMenu] = useState("Breakfast");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!curr) return;
@@ -245,10 +247,7 @@ const Landing = () => {
             Call us Baby.
           </h2>
 
-          <div
-            onMouseEnter={() => setCurr("search")}
-            className="flex items-center relative my-4"
-          >
+          <div className="flex items-center relative my-4">
             <div className="absolute p-4 bg-(--primary) text-white rounded-full left-1">
               <motion.div
                 animate={
@@ -269,6 +268,7 @@ const Landing = () => {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search Restaurant, Food..."
               className="border border-slate-300 w-full md:w-[60%] p-4 rounded-4xl bg-white  outline-(--primary) pl-16"
+              onMouseEnter={() => setCurr("search")}
             />
           </div>
           <div className="flex gap-5 my-4  mx-auto sm:mx-0">
@@ -276,6 +276,7 @@ const Landing = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="bg-(--primary) text-white p-4 md:px-10 rounded-xl hover:bg-(--accent) cursor-pointer"
+              onClick={() => navigate("/register")}
             >
               Get Started
             </motion.button>
@@ -283,6 +284,7 @@ const Landing = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="border border-(--primary) p-4 md:px-10 rounded-xl hover:bg-(--secondary) hover:text-white cursor-pointer"
+              onClick={() => navigate("/about")}
             >
               About us
             </motion.button>
@@ -398,7 +400,7 @@ const Landing = () => {
               transition={{ duration: 1 }}
               src={howDeliver1}
               alt=""
-              className="w-60 min-h-60"
+              className="w-60 min-h-60 object-contain"
             />
             <h2 className="font-bold text-lg">Deliver your food</h2>
             <p className="text-[12px] text-slate-500">
@@ -419,7 +421,7 @@ const Landing = () => {
               transition={{ duration: 1 }}
               src={howDeliver2}
               alt=""
-              className="w-60  min-h-60"
+              className="w-60  min-h-60 object-contain"
             />
             <h2 className="font-bold text-lg">Order has arrived</h2>
             <p className="text-[12px] text-slate-500">
@@ -440,7 +442,7 @@ const Landing = () => {
               transition={{ duration: 1 }}
               src={howDeliver3}
               alt=""
-              className="w-60  min-h-60"
+              className="w-60  min-h-60 object-contain"
             />
             <h2 className="font-bold text-lg">Order ready serve</h2>
             <p className="text-[12px] text-slate-500">

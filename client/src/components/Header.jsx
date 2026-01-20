@@ -7,21 +7,24 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import rider from "../assets/animations/rider.json";
 import Lottie from "lottie-react";
 import useWindowSize from "../hooks/useWindowSize";
+import useUiStore from "../store/useUiStore";
 
 const Header = () => {
-  const [show, setShow] = useState();
+  const { showHeaderMenu, setShowHeaderMenu } = useUiStore();
   const [showHeader, setShowHeader] = useState(true);
   const lastScrollY = React.useRef(0);
   const navigate = useNavigate();
   const location = useLocation().pathname;
   const size = useWindowSize();
+  
+  
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
       if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
-        setShow(false);
+        setShowHeaderMenu(false);
         setShowHeader(false);
       } else {
         setShowHeader(true);
@@ -139,10 +142,10 @@ const Header = () => {
               whileTap={{ scale: 0.8 }}
               onClick={(e) => {
                 e.stopPropagation();
-                setShow(!show);
+                setShowHeaderMenu(!showHeaderMenu);
               }}
             >
-              {show ? (
+              {showHeaderMenu ? (
                 <IoCloseSharp size={30} />
               ) : (
                 <GiHamburgerMenu size={24} />
@@ -152,7 +155,7 @@ const Header = () => {
         </div>
 
         <AnimatePresence>
-          {show && (
+          {showHeaderMenu && (
             <motion.div
               className="flex  md:hidden flex-col items-baseline gap-3 mx-4 mb-4"
               exit={{ opacity: 0, y: -100 }}
@@ -163,7 +166,7 @@ const Header = () => {
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => {
-                  setShow(false);
+                  setShowHeaderMenu(false);
                   navigate("/");
                 }}
                 className={`cursor-pointer hover:text-(--accent) w-full flex justify-baseline ${
@@ -176,7 +179,7 @@ const Header = () => {
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => {
-                  setShow(false);
+                  setShowHeaderMenu(false);
                   navigate("/about");
                 }}
                 className={`cursor-pointer  hover:text-(--accent) w-full flex justify-baseline ${
@@ -189,7 +192,7 @@ const Header = () => {
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => {
-                  setShow(false);
+                  setShowHeaderMenu(false);
                   navigate("/contact");
                 }}
                 className={`cursor-pointer hover:text-(--accent) w-full flex justify-baseline ${
@@ -206,7 +209,7 @@ const Header = () => {
                   className="cursor-pointer text-white px-4 py-2 rounded-lg bg-(--secondary) hover:bg-(--accent)"
                   onClick={() => {
                     navigate("/login");
-                    setShow(false);
+                    setShowHeaderMenu(false);
                   }}
                 >
                   Login
@@ -218,7 +221,7 @@ const Header = () => {
                   className="cursor-pointer text-white px-4 py-2 rounded-lg bg-(--secondary) hover:bg-(--accent)"
                   onClick={() => {
                     navigate("/register");
-                    setShow(false);
+                    setShowHeaderMenu(false);
                   }}
                 >
                   Register

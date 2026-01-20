@@ -8,7 +8,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import UserDashboard from "./pages/dashboards/UserDashboard";
 import useWindowSize from "./hooks/useWindowSize";
-import PhoneHeader from "./components/PhoneHeader";
+import PhoneBottomBar from "./components/PhoneBottomBar";
 import PhoneTopBar from "./components/PhoneTopBar";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
@@ -16,14 +16,16 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Landing from "./pages/Landing";
 import Lenis from "lenis";
-
-const paths = ["/user-dashboard"];
+import useUiStore from "./store/useUiStore";
+import { useAuthStore } from "./store/useAuthStore";
+import Loading from "./components/Loading";
+import UserHeader from "./components/UserHeader";
 
 const App = () => {
-  const user = null;
+  const { setShowHeaderMenu } = useUiStore();
+  const { user, checkAuth, isCheckingAuth } = useAuthStore();
   const size = useWindowSize();
   const location = useLocation().pathname;
-  const [margint, setMarginT] = useState("");
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -46,33 +48,41 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const flag = paths.includes(location);
-    if (flag) {
-      setMarginT("");
-    } else {
-      setMarginT("mt-[10dvh]");
-    }
-  }, [location]);
+    checkAuth();
+  }, []);
+
+  if (isCheckingAuth) return <Loading />;
 
   return (
     <div
       className={`bg-gradient  overflow-x-hidden  ${
         size.width < 645 && user
-          ? `mb-[10dvh] ${margint ? ` h-[90dvh]` : "h-[90dvh]"} `
+          ? `mb-[10dvh] h-[90dvh] `
           : "pt-[13dvh] min-h-dvh"
       }`}
+      onClick={() => {
+        setShowHeaderMenu(false);
+      }}
     >
-      {size.width < 645 && user && <PhoneTopBar />}
-      {size.width < 645 && user ? <PhoneHeader /> : <Header />}
+      {!user ? (
+        <Header />
+      ) : size.width < 645 ? (
+        <PhoneBottomBar />
+      ) : (
+        <UserHeader />
+      )}
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={user ? <Home /> : <Landing />} />
+        <Route path="/login" element={user ? <Home /> : <Login />} />
+        <Route path="/register" element={user ? <Home /> : <Register />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/user-dashboard" element={<UserDashboard />} />
+        <Route path="/profile" element={user ? <Profile /> : <Login />} />
+        <Route path="/cart" element={user ? <Cart /> : <Login />} />
+        <Route
+          path="/user-dashboard"
+          element={user ? <UserDashboard /> : <Login />}
+        />
       </Routes>
       <Toaster />
     </div>

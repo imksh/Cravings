@@ -8,11 +8,13 @@ import transparentLogo from "../assets/images/transparentLogo.png";
 import { motion } from "motion/react";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 const Register = () => {
+  const { register, isRegistering } = useAuthStore();
   const navigate = useNavigate();
   const [data, setData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     phone: "",
     password: "",
@@ -20,7 +22,6 @@ const Register = () => {
   const [confirm, setConfirm] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [err, setErr] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
 
   const handleChange = (e) => {
@@ -31,41 +32,35 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setIsLoading(true);
       if (!validate()) {
-        setIsLoading(false);
         toast.error("Form validation failed");
         return;
       }
 
       const isMatched = data.password === confirm;
       if (!isMatched) {
-        setIsLoading(false);
         toast.error("Password didn't matched");
       }
       console.log(data);
 
-      const res = await api.post("/auth/register", data);
-
-      console.log("Message: ", res.data.message);
-      console.log("Data: ", res.data.data);
-      toast.success(res.data.message);
-
-      setIsLoading(false);
+      const res = await register(data);
       handleReset(e);
-      setShowAnimation(true);
+      if (res) {
+        setShowAnimation(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 500);
+      }
     } catch (error) {
       console.log("Error in registration: ", error);
       toast.error(error.response.data.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const validate = () => {
     const error = {};
-    if (!/^[A-Za-z ]+$/.test(data.fullName)) {
-      error.fullName = "Please enter a valid name";
+    if (!/^[A-Za-z ]+$/.test(data.name)) {
+      error.name = "Please enter a valid name";
     }
     if (!/^[\w\.]+@[A-Za-z]+\.[A-Za-z]+$/.test(data.email)) {
       error.email = "Please enter a valid email address";
@@ -84,7 +79,7 @@ const Register = () => {
   const handleReset = (e) => {
     e.preventDefault();
     setData({
-      fullName: "",
+      name: "",
       email: "",
       phone: "",
       password: "",
@@ -112,17 +107,17 @@ const Register = () => {
           <div className="w-full flex flex-col">
             <input
               type="text"
-              name="fullName"
-              id="fullName"
-              value={data.fullName}
+              name="name"
+              id="name"
+              value={data.name}
               onChange={(e) => handleChange(e)}
               className="border p-4 rounded-xl border-gray-300 disabled:bg-gray-200 disabled:cursor-not-allowed  w-full "
               required
-              disabled={isLoading}
+              disabled={isRegistering}
               placeholder="Full Name"
             />
             <span className="text-red-500 text-[12px] ml-auto mr-2">
-              {err.fullName}
+              {err.name}
             </span>
           </div>
           <div className="w-full  flex flex-col">
@@ -134,7 +129,7 @@ const Register = () => {
               onChange={(e) => handleChange(e)}
               className="border p-4  rounded-xl border-gray-300 disabled:bg-gray-200 disabled:cursor-not-allowed   w-full"
               required
-              disabled={isLoading}
+              disabled={isRegistering}
               placeholder="Email"
             />
             <span className="text-red-500 text-[12px] ml-auto mr-2">
@@ -150,7 +145,7 @@ const Register = () => {
               onChange={(e) => handleChange(e)}
               className="border p-4  rounded-xl border-gray-300 disabled:bg-gray-200 disabled:cursor-not-allowed   w-full "
               required
-              disabled={isLoading}
+              disabled={isRegistering}
               placeholder="Phone Number"
             />
             <span className="text-red-500 text-[12px] ml-auto mr-2">
@@ -167,7 +162,7 @@ const Register = () => {
               placeholder="Enter your password"
               value={data.password}
               required
-              disabled={isLoading}
+              disabled={isRegistering}
               onChange={(e) => handleChange(e)}
             />
             <button
@@ -192,7 +187,7 @@ const Register = () => {
                   ? "border-red-400"
                   : ""
               }`}
-              disabled={isLoading}
+              disabled={isRegistering}
               placeholder="Confirm your password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
@@ -207,16 +202,16 @@ const Register = () => {
           <button
             className="w-[50%] py-4 bg-red-500 hover:bg-red-700 text-white cursor-pointer  mx-auto  rounded-lg hover:scale-105 disabled:scale-100 disabled:bg-gray-400 disabled:cursor-not-allowed"
             type="reset"
-            disabled={isLoading}
+            disabled={isRegistering}
           >
             Clear
           </button>
           <motion.button
             className={`w-[50%] py-4 bg-blue-500 hover:bg-blue-700 text-white cursor-pointer  mx-auto rounded-lg hover:scale-105 disabled:scale-100 disabled:bg-gray-400 disabled:cursor-not-allowed items-center justify-center flex `}
             type="submit"
-            disabled={isLoading}
+            disabled={isRegistering}
           >
-            {!isLoading ? (
+            {!isRegistering ? (
               "Submit"
             ) : (
               <motion.div

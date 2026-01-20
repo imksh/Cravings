@@ -12,21 +12,13 @@ import UserTopBar from "../../components/userDashboard/UserTopBar";
 const UserDashboard = () => {
   const [active, setActive] = useState("overview");
   const [show, setShow] = useState(false);
-  const [contentWidth, setContentWidth] = useState(0);
   const size = useWindowSize();
-  const sideBarRef = useRef(null);
-  useEffect(() => {
-    if (!sideBarRef.current) return;
-    const rect = sideBarRef.current.getBoundingClientRect();
-    setContentWidth(size.width - rect.width);
-  }, [size.width]);
 
   return (
     <div
-      ref={sideBarRef}
       className={
         size.width > 645
-          ? "flex w-full h-[87dvh] overflow-hidden"
+          ? `flex w-full h-[87dvh] overflow-hidden }`
           : "flex w-full h-[80dvh] flex-col"
       }
     >
@@ -36,7 +28,7 @@ const UserDashboard = () => {
             initial={{ width: "5%" }}
             whileHover={{ width: "20%" }}
             transition={{ duration: 0.5 }}
-            className={`shadow-lg min-w-[70px] shrink-0 overflow-auto hide-scrollbar border-r border-slate-300 bg-slate-100`}
+            className={`shadow-lg absolute h-full min-w-[70px] z-50 shrink-0 overflow-auto hide-scrollbar border-r border-slate-300 header-gradient`}
             onMouseEnter={() => setShow(true)}
             onMouseLeave={() => setShow(false)}
           >
@@ -46,14 +38,17 @@ const UserDashboard = () => {
       ) : (
         <UserTopBar active={active} setActive={setActive} show={show} />
       )}
-
-      <div className={`grow  col-span-6 overflow-auto`}>
+      <div className={`w-[95%] ml-auto overflow-auto `}>
         {active === "overview" && <UserOverview />}
         {active === "profile" && <UserProfile />}
         {active === "orders" && <UserOrders />}
         {active === "transactions" && <UserTranscation />}
         {active === "help" && <UserHealpdesk />}
       </div>
+
+      {show && size.width > 645 && (
+        <div className="fixed inset-0 bg-black/40 z-40 transition-opacity" />
+      )}
     </div>
   );
 };

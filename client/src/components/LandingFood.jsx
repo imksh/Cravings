@@ -53,7 +53,7 @@ const LandingFood = ({ item }) => {
           </h3>
           <motion.button
             whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 1 }}
+            whileTap={{ scale: 0.9 }}
             className="rounded-2xl border px-6 py-2 bg-black text-white hover:text-(--primary) hover:bg-white cursor-pointer mx-auto my-4"
           >
             Buy Now
