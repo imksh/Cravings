@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import Lottie from "lottie-react";
 import celebrate from "../assets/animations/celebrate.json";
-import api from "../config/Api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import transparentLogo from "../assets/images/transparentLogo.png";
 import { motion } from "motion/react";

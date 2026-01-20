@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import Lottie from "lottie-react";
 import celebrate from "../assets/animations/celebrate.json";
-import api from "../config/Api";
+import api from "../config/api.js";
 import transparentLogo from "../assets/images/transparentLogo.png";
 import { motion } from "motion/react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -18,7 +18,6 @@ const Contact = () => {
     phone: "",
     message: "",
   });
-  const [showPass, setShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
 
