@@ -1,27 +1,27 @@
-//dotenv
-import dotenv from "dotenv";
-dotenv.config();
-
 //package import
+import "./src/config/env.js";
+import { createServer } from "http";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import connectDB from "./src/config/db.js";
+import initializeSocket from "./src/config/socket.js";
+import cloudinary from "./src/config/cloudinary.js";
 import authRouter from "./src/routers/auth.route.js";
 import publicRouter from "./src/routers/public.route.js";
+import userRouter from "./src/routers/user.route.js";
+import PartnerRouter from "./src/routers/partner.route.js";
+import customerRouter from "./src/routers/customer.route.js";
 
 const app = express();
+const server = createServer(app);
 
 //middleware
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://10.53.203.71:5173",
-      "https://imksh-cravings.netlify.app",
-    ],
+    origin: ["http://localhost:5173", "http://10.53.203.71:5173"],
     credentials: true,
   }),
 );
@@ -33,9 +33,12 @@ app.use(morgan("dev"));
 
 app.use("/api/public", publicRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/partner", PartnerRouter);
+app.use("/api/customer", customerRouter);
 
 //home route
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   return res.status(200).json({ message: "Server is running" });
 });
 
@@ -54,7 +57,15 @@ app.use((err, req, res, next) => {
 //port
 const port = process.env.PORT || 4500;
 
-app.listen(port, () => {
-  connectDB();
+initializeSocket(server);
+
+server.listen(port, async () => {
   console.log("Server is started at: ", port);
+  connectDB();
+  // try {
+  //   const res = await cloudinary.api.ping();
+  //   console.log("Cloudinary api is working ", res);
+  // } catch (error) {
+  //   console.error("Error in connecting cloudinary api", error);
+  // }
 });

@@ -1,41 +1,59 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-const protectedRoute = async (req, res, next) => {
+import Customer from "../models/customer.model.js";
+import Restaurant from "../models/restaurant.model.js";
+const protectedRoutes = async (req, res, next) => {
   try {
-    let token;
-    const authHeader = req.headers.authorization;
-
-    if (authHeader && authHeader.startsWith("Bearer ")) {
-      token = authHeader.split(" ")[1];
-    }
-
-    if (!token && req.cookies?.token) {
-      token = req.cookies.token;
-    }
+    const token = req.cookies.token;
 
     if (!token) {
       return next({
         status: 401,
-        message: "Unauthorized: token missing",
+        message: "Unauthorized! No token ptovided",
       });
     }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!decoded) {
+      return next({
+        status: 401,
+        message: "Unauthorized! Token expired",
+      });
+    }
+
     const user = await User.findById(decoded.id).select("-password");
+
     if (!user) {
       return next({
-        status: 404,
-        message: "User not found",
+        status: 401,
+        message: "Unauthorized user",
       });
     }
+
+    const role = user.role;
+
+    if (role === "customer") {
+      const customer = await Customer.findOne({
+        user: user._id,
+      }).populate("favorites", "name logo");
+
+      user.customer = customer ? customer.toObject() : null;
+    }
+
+    if (role === "partner") {
+      const restaurant = await Restaurant.findOne({
+        owner: user._id,
+      });
+
+      user.restaurant = restaurant ? restaurant.toObject() : null;
+    }
+
     req.user = user;
     next();
   } catch (error) {
-    console.log("Error in protectedRoute: ", error);
-    return next({
-      status: 401,
-      message: "Invalid or expired token",
-    });
+    console.log("Error in Auth middleware: ", error);
+    next(error);
   }
 };
 
-export default protectedRoute;
+export default protectedRoutes;

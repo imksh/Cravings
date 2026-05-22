@@ -21,7 +21,7 @@ import heroSm3 from "../assets/images/landing/hero-sm-3.png";
 import howDeliver1 from "../assets/images/landing/how-deliver-1.png";
 import howDeliver2 from "../assets/images/landing/how-deliver-2.png";
 import howDeliver3 from "../assets/images/landing/how-deliver-3.png";
-import Footer from "../components/Footer";
+import Footer from "../components/PublicFooter";
 import LandingFood from "../components/LandingFood";
 import Testimonials from "../components/Testimonials";
 import useWindowSize from "../hooks/useWindowSize";
@@ -218,8 +218,7 @@ const Landing = () => {
   }, [curr]);
 
   return (
-    <div className="overflow-auto hide-scrollbar">
-      {/* Hero Section */}
+    <div className="overflow-auto hide-scrollbar bg-gradient">
       <div className="px-[7.5%] gap-8 sm:gap-0  grid grid-cols-1 sm:grid-cols-2 justify-between items-center min-h-[85dvh]">
         <motion.div
           initial={{ opacity: 0, x: -100 }}

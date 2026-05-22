@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import Lottie from "lottie-react";
 import delivery from "../assets/animations/delivery.json";
-import Footer from "../components/Footer";
+import Footer from "../components/PublicFooter";
 
 const About = () => {
   return (

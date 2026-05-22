@@ -1,6 +1,6 @@
 import React from "react";
 
-import infinity from "../assets/animations/infinity.json";
+import infinity from "../assets/animations/loadingWave.json";
 import Lottie from "lottie-react";
 
 const Loading = ({ size = "w-60 h-60", bg }) => {
