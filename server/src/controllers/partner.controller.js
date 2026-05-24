@@ -280,7 +280,7 @@ export const updateRestaurantOrderStatus = async (req, res, next) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!["confirmed", "cancelled", "preparing", "ready"].includes(status)) {
+    if (!["accepted", "cancelled", "preparing", "ready"].includes(status)) {
       return res.status(400).json({
         message: "Invalid order status",
       });
@@ -298,10 +298,10 @@ export const updateRestaurantOrderStatus = async (req, res, next) => {
     }
 
     const validTransitions = {
-      placed: ["confirmed", "cancelled"],
-      confirmed: ["preparing", "cancelled"],
-      preparing: ["ready", "cancelled"],
-      ready: ["cancelled"],
+      pending: ["accepted", "rejected", "cancelled", "rejected"],
+      accepted: ["preparing", "cancelled", "rejected"],
+      preparing: ["ready", "cancelled", "rejected"],
+      ready: ["cancelled", "picked", "rejected"],
     };
 
     if (!validTransitions[order.status].includes(status)) {
@@ -312,6 +312,10 @@ export const updateRestaurantOrderStatus = async (req, res, next) => {
 
     order.status = status;
     await order.save();
+
+    if (status === "accepted") {
+      startRiderSearch(order._id);
+    }
 
     const updatedOrder = await Order.findById(order._id)
       .populate("customer", "name email phone")
@@ -333,3 +337,43 @@ export const updateRestaurantOrderStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+const SEARCH_RADII = [2, 5, 8, 12]; 
+
+export const startRiderSearch = async (orderId) => {
+  const order = await Order.findById(orderId).populate("restaurant");
+
+  if (!order) return;
+
+  for (const radius of SEARCH_RADII) {
+    const riders = await Rider.find({
+      isAvailable: true,
+
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+
+            coordinates: [
+              order.restaurant.location.coordinates[0],
+
+              order.restaurant.location.coordinates[1],
+            ],
+          },
+
+          $maxDistance: radius * 1000,
+        },
+      },
+    });
+
+    const assigned = await notifyRidersSequentially(riders, order);
+
+    if (assigned) {
+      return;
+    }
+  }
+
+  console.log("No rider found");
+};
+
+

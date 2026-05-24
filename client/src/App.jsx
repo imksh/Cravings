@@ -38,6 +38,11 @@ import { useSocket } from "./hooks/useSocket";
 import OrderStatusPage from "./pages/customer/OrderStatusPage";
 import CustomerOrder from "./pages/customer/CustomerOrder";
 import CustomerOrderPage from "./pages/customer/CustomerOrderPage";
+import RiderDashboard from "./pages/rider/RiderDashboard";
+import RiderLayout from "./components/layouts/RiderLayout";
+import RiderOrders from "./pages/rider/RiderOrders";
+import RiderEarnings from "./pages/rider/RiderEarnings";
+import RiderProfile from "./pages/rider/RiderProfile";
 
 const App = () => {
   useSocket();
@@ -149,6 +154,20 @@ const App = () => {
             <Route path="menu" element={<PartnerMenu />} />
             <Route path="orders" element={<PartnerOrders />} />
             <Route path="offers" element={<PartnerOffers />} />
+          </Route>
+
+          <Route
+            path="/rider"
+            element={
+              <ProtectedRoute role="rider">
+                <RiderLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="" element={<RiderDashboard />} />
+            <Route path="orders" element={<RiderOrders />} />
+            <Route path="earnings" element={<RiderEarnings />} />
+            <Route path="profile" element={<RiderProfile />} />
           </Route>
         </Routes>
       </Suspense>

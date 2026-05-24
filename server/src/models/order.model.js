@@ -81,15 +81,17 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: [
-        "placed",
-        "confirmed",
+        "pending",
+        "accepted",
         "preparing",
         "ready",
         "picked",
+        "on_the_way",
         "delivered",
         "cancelled",
+        "rejected",
       ],
-      default: "placed",
+      default: "pending",
     },
 
     subtotal: Number,

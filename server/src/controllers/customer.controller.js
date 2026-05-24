@@ -133,7 +133,7 @@ export const createOrder = async (req, res) => {
 
       paymentStatus: paymentStatus || "pending",
 
-      status: "placed",
+      status: "pending",
 
       subtotal: subtotal || totalPrice,
 
@@ -225,7 +225,7 @@ export const getActiveOrders = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const activeStatuses = ["placed", "confirmed", "preparing", "ready","picked"];
+    const activeStatuses = ["pending", "accepted", "preparing", "ready","picked"];
 
     const orders = await Order.find({
       customer: userId,

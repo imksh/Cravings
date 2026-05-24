@@ -73,6 +73,50 @@ const PartnerOrders = () => {
     revenue: 0,
   });
   const itemsPerPage = 10;
+  const orderState = {
+    pending: ["accepted", "rejected", "cancelled"],
+
+    accept: [
+      "accepted",
+      "confirmed",
+      "preparing",
+      "ready",
+      "picked",
+      "on_the_way",
+      "delivered",
+      "cancelled",
+      "rejected",
+    ],
+
+    preparing: [
+      "preparing",
+      "ready",
+      "picked",
+      "on_the_way",
+      "delivered",
+      "cancelled",
+      "rejected",
+    ],
+
+    ready: [
+      "ready",
+      "picked",
+      "on_the_way",
+      "delivered",
+      "cancelled",
+      "rejected",
+    ],
+
+    picked: ["picked", "on_the_way", "delivered", "cancelled", "rejected"],
+
+    on_the_way: ["delivered"],
+
+    delivered: [],
+
+    cancelled: [],
+
+    rejected: [],
+  };
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -449,13 +493,13 @@ const PartnerOrders = () => {
                             onClick={() =>
                               updateOrderStatus(order._id, "confirmed")
                             }
-                            disabled={order.status !== "placed"}
+                            disabled={orderState.accept?.includes(order.status)}
                             className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-[#f1e5dd] bg-white px-4 py-5 text-xs font-semibold text-slate-600 transition hover:border-orange-200 hover:bg-orange-50 hover:text-orange-500
                             disabled:cursor-not-allowed disabled:bg-green-300 "
                           >
                             <CheckCircle2 size={18} />
-                            {order.status === "confirmed"
-                              ? "Confirmed"
+                            {orderState.accept?.includes(order.status)
+                              ? "Accepted"
                               : "Accept"}
                           </button>
 
@@ -463,7 +507,10 @@ const PartnerOrders = () => {
                             onClick={() =>
                               updateOrderStatus(order._id, "preparing")
                             }
-                            className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-[#f1e5dd] bg-white px-4 py-5 text-xs font-semibold text-slate-600 transition hover:border-orange-200 hover:bg-orange-50 hover:text-orange-500"
+                            disabled={orderState.preparing?.includes(
+                              order.status,
+                            )}
+                            className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-[#f1e5dd] bg-white px-4 py-5 text-xs font-semibold text-slate-600 transition hover:border-orange-200 hover:bg-orange-50 hover:text-orange-500 disabled:cursor-not-allowed disabled:bg-orange-300"
                           >
                             <Flame size={18} />
                             Preparing
@@ -473,13 +520,26 @@ const PartnerOrders = () => {
                             onClick={() =>
                               updateOrderStatus(order._id, "ready")
                             }
-                            className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-[#f1e5dd] bg-white px-4 py-5 text-xs font-semibold text-slate-600 transition hover:border-orange-200 hover:bg-orange-50 hover:text-orange-500"
+                            disabled={
+                              orderState.ready?.includes(order.status) ||
+                              order.status === "cancelled"
+                            }
+                            className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-[#f1e5dd] bg-white px-4 py-5 text-xs font-semibold text-slate-600 transition hover:border-orange-200 hover:bg-orange-50 hover:text-orange-500 disabled:cursor-not-allowed disabled:bg-orange-300"
                           >
                             <Clock size={18} />
                             Ready
                           </button>
 
-                          <button className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-red-100 bg-red-50 px-4 py-5 text-xs font-semibold text-red-500 transition hover:bg-red-100">
+                          <button
+                            onClick={() =>
+                              updateOrderStatus(order._id, "cancelled")
+                            }
+                            disabled={
+                              orderState.cancelled?.includes(order.status) ||
+                              order.status === "cancelled"
+                            }
+                            className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-red-100 bg-red-50 px-4 py-5 text-xs font-semibold text-red-500 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:bg-red-300"
+                          >
                             <XCircle size={18} />
                             Cancel
                           </button>
