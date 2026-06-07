@@ -18,11 +18,7 @@ import {
   LoaderCircle,
 } from "lucide-react";
 
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import api from "../../config/api";
 
@@ -33,45 +29,32 @@ const OrderStatusPage = () => {
 
   const location = useLocation();
 
-  const stateOrder =
-    location?.state?.order || null;
+  const stateOrder = location?.state?.order || null;
 
-  const [orderData, setOrderData] =
-    useState(stateOrder);
+  const [orderData, setOrderData] = useState(stateOrder);
 
-  const [isLoading, setIsLoading] =
-    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const isFailed =
-    status === "failed" ||
-    status === "cancelled";
+  const isFailed = status === "failed" || status === "cancelled";
 
   const isSuccess = !isFailed;
 
   useEffect(() => {
-    const fetchOrder =
-      async () => {
-        if (orderData || !id || id == "null") return;
+    const fetchOrder = async () => {
+      if (orderData || !id || id == "null") return;
 
-        try {
-          setIsLoading(true);
+      try {
+        setIsLoading(true);
 
-          const res = await api.get(
-            `/customer/order/${id}`
-          );
+        const res = await api.get(`/customer/order/${id}`);
 
-          setOrderData(
-            res.data.order
-          );
-        } catch (error) {
-          console.log(
-            "Error fetching order:",
-            error
-          );
-        } finally {
-          setIsLoading(false);
-        }
-      };
+        setOrderData(res.data.order);
+      } catch (error) {
+        console.log("Error fetching order:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
     fetchOrder();
   }, [id, orderData]);
@@ -80,131 +63,87 @@ const OrderStatusPage = () => {
     id:
       orderData?.orderId ||
       (orderData?._id
-        ? `CRV-${orderData._id
-            .slice(-8)
-            .toUpperCase()}`
+        ? `CRV-${orderData._id.slice(-8).toUpperCase()}`
         : "CRV-PENDING"),
 
-    amount:
-      Number(
-        orderData?.total
-      ) || 0,
+    amount: Number(orderData?.total) || 0,
 
-    itemCount: Array.isArray(
-      orderData?.items
-    )
+    itemCount: Array.isArray(orderData?.items)
       ? orderData.items.reduce(
-          (sum, item) =>
-            sum +
-            (Number(
-              item?.quantity
-            ) || 0),
-          0
+          (sum, item) => sum + (Number(item?.quantity) || 0),
+          0,
         )
       : 0,
 
-    paymentMethod:
-      orderData?.paymentMethod ||
-      "cod",
+    paymentMethod: orderData?.paymentMethod || "cod",
 
     eta: "25-35 mins",
 
     address:
       [
-        orderData
-          ?.deliveryAddress
-          ?.address,
+        orderData?.deliveryAddress?.address,
 
-        orderData
-          ?.deliveryAddress
-          ?.city,
+        orderData?.deliveryAddress?.city,
 
-        orderData
-          ?.deliveryAddress
-          ?.pin,
+        orderData?.deliveryAddress?.pin,
       ]
         .filter(Boolean)
-        .join(", ") ||
-      "Address unavailable",
+        .join(", ") || "Address unavailable",
   };
 
   const paymentLabel =
-    order.paymentMethod ===
-    "cod"
+    order.paymentMethod === "cod"
       ? "Cash on Delivery"
       : order.paymentMethod?.toUpperCase();
 
-  
-
   const config = isSuccess
     ? {
-        title:
-          "Order Confirmed",
+        title: "Order Confirmed",
 
         subtitle:
           "Your order has been accepted by the restaurant and is now being prepared.",
 
-        gradient:
-          "from-[#0ea5a5] via-[#16a34a] to-[#65a30d]",
+        gradient: "from-[#0ea5a5] via-[#16a34a] to-[#65a30d]",
 
-        softBg:
-          "bg-emerald-100/70",
+        softBg: "bg-emerald-100/70",
 
-        iconBg:
-          "bg-white/20",
+        iconBg: "bg-white/20",
 
-        primary:
-          "text-emerald-600",
+        primary: "text-emerald-600",
 
-        button:
-          "bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200",
+        button: "bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200",
 
-        pulse:
-          "bg-emerald-300/30",
+        pulse: "bg-emerald-300/30",
 
-        icon:
-          CheckCircle2,
+        icon: CheckCircle2,
       }
     : {
-        title:
-          "Order Failed",
+        title: "Order Failed",
 
-        subtitle:
-          "We could not complete your order this time.",
+        subtitle: "We could not complete your order this time.",
 
-        gradient:
-          "from-[#dc2626] via-[#ef4444] to-[#f97316]",
+        gradient: "from-[#dc2626] via-[#ef4444] to-[#f97316]",
 
-        softBg:
-          "bg-rose-100/70",
+        softBg: "bg-rose-100/70",
 
-        iconBg:
-          "bg-white/15",
+        iconBg: "bg-white/15",
 
-        primary:
-          "text-red-600",
+        primary: "text-red-600",
 
-        button:
-          "bg-red-500 hover:bg-red-600 shadow-red-200",
+        button: "bg-red-500 hover:bg-red-600 shadow-red-200",
 
-        pulse:
-          "bg-red-300/20",
+        pulse: "bg-red-300/20",
 
         icon: XCircle,
       };
 
   const Icon = config.icon;
 
- 
-
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f7f8f2]">
         <div className="flex flex-col items-center gap-4">
-          <LoaderCircle
-            size={42}
-            className="animate-spin text-(--primary)"
-          />
+          <LoaderCircle size={42} className="animate-spin text-(--primary)" />
 
           <p className="text-sm font-semibold text-slate-600">
             Loading order...
@@ -257,9 +196,7 @@ const OrderStatusPage = () => {
               <motion.div
                 initial={{
                   scale: 0,
-                  rotate: isSuccess
-                    ? -20
-                    : 20,
+                  rotate: isSuccess ? -20 : 20,
                 }}
                 animate={{
                   scale: 1,
@@ -277,25 +214,17 @@ const OrderStatusPage = () => {
                 ) : (
                   <motion.div
                     animate={{
-                      scale: [
-                        1,
-                        1.08,
-                        1,
-                      ],
+                      scale: [1, 1.08, 1],
                     }}
                     transition={{
-                      repeat:
-                        Infinity,
+                      repeat: Infinity,
                       duration: 1.5,
                     }}
                     className="absolute inset-0 rounded-full border-4 border-white/20"
                   />
                 )}
 
-                <Icon
-                  size={64}
-                  className="relative z-10"
-                />
+                <Icon size={64} className="relative z-10" />
               </motion.div>
 
               {/* TITLE */}
@@ -367,21 +296,14 @@ const OrderStatusPage = () => {
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
-                        <Wallet
-                          size={20}
-                        />
+                        <Wallet size={20} />
                       </div>
 
                       <div>
-                        <p className="text-sm text-slate-500">
-                          Total
-                        </p>
+                        <p className="text-sm text-slate-500">Total</p>
 
                         <h3 className="text-xl font-black text-slate-900">
-                          ₹{" "}
-                          {
-                            order.amount
-                          }
+                          ₹ {order.amount}
                         </h3>
                       </div>
                     </div>
@@ -404,20 +326,14 @@ const OrderStatusPage = () => {
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
-                        <Package
-                          size={20}
-                        />
+                        <Package size={20} />
                       </div>
 
                       <div>
-                        <p className="text-sm text-slate-500">
-                          Items
-                        </p>
+                        <p className="text-sm text-slate-500">Items</p>
 
                         <h3 className="text-xl font-black text-slate-900">
-                          {
-                            order.itemCount
-                          }
+                          {order.itemCount}
                         </h3>
                       </div>
                     </div>
@@ -441,21 +357,14 @@ const OrderStatusPage = () => {
                 >
                   <div className="flex items-center gap-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-600">
-                      <ReceiptText
-                        size={20}
-                      />
+                      <ReceiptText size={20} />
                     </div>
 
                     <div>
-                      <p className="text-sm text-slate-500">
-                        Payment
-                        Method
-                      </p>
+                      <p className="text-sm text-slate-500">Payment Method</p>
 
                       <h3 className="text-lg font-black text-slate-900">
-                        {
-                          paymentLabel
-                        }
+                        {paymentLabel}
                       </h3>
                     </div>
                   </div>
@@ -478,21 +387,14 @@ const OrderStatusPage = () => {
                 >
                   <div className="flex items-start gap-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
-                      <MapPin
-                        size={20}
-                      />
+                      <MapPin size={20} />
                     </div>
 
                     <div>
-                      <p className="text-sm text-slate-500">
-                        Delivery
-                        Address
-                      </p>
+                      <p className="text-sm text-slate-500">Delivery Address</p>
 
                       <h3 className="mt-1 text-base font-bold text-slate-900">
-                        {
-                          order.address
-                        }
+                        {order.address}
                       </h3>
                     </div>
                   </div>
@@ -518,44 +420,26 @@ const OrderStatusPage = () => {
               >
                 <div className="flex items-start gap-4">
                   <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-red-500 shadow-sm">
-                    <AlertTriangle
-                      size={28}
-                    />
+                    <AlertTriangle size={28} />
                   </div>
 
                   <div>
                     <h3 className="text-xl font-black text-slate-900">
-                      Order could
-                      not be placed
+                      Order could not be placed
                     </h3>
 
                     <ul className="mt-4 space-y-2 text-sm text-slate-600">
-                      <li>
-                        • Restaurant
-                        unavailable
-                      </li>
+                      <li>• Restaurant unavailable</li>
 
-                      <li>
-                        • Payment
-                        issue
-                      </li>
+                      <li>• Payment issue</li>
 
-                      <li>
-                        • Item out
-                        of stock
-                      </li>
+                      <li>• Item out of stock</li>
 
-                      <li>
-                        • Network
-                        interruption
-                      </li>
+                      <li>• Network interruption</li>
                     </ul>
 
                     <div className="mt-5 rounded-2xl bg-white p-4 text-sm leading-6 text-slate-600">
-                      Any deducted
-                      amount will be
-                      refunded
-                      automatically.
+                      Any deducted amount will be refunded automatically.
                     </div>
                   </div>
                 </div>
@@ -578,42 +462,27 @@ const OrderStatusPage = () => {
               className="grid gap-3 pt-1 sm:grid-cols-2"
             >
               <button
-                onClick={() =>
-                  navigate("/")
-                }
+                onClick={() => navigate("/")}
                 className={`inline-flex items-center justify-center gap-3 rounded-[1.2rem] px-5 py-4 text-sm font-bold text-white shadow-[0_12px_30px_rgba(15,23,42,0.12)] transition hover:scale-[1.01] ${config.button}`}
               >
                 <Home size={18} />
-
                 Back to Home
               </button>
 
               {isSuccess ? (
                 <button
-                  onClick={() =>
-                    navigate(
-                      "/customer/orders"
-                    )
-                  }
+                  onClick={() => navigate("/customer/orders")}
                   className="inline-flex items-center justify-center gap-2 rounded-[1.2rem] border border-[#e9dfd1] bg-white px-5 py-4 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
                 >
                   View Orders
-
-                  <ArrowRight
-                    size={16}
-                  />
+                  <ArrowRight size={16} />
                 </button>
               ) : (
                 <button
-                  onClick={() =>
-                    navigate(-1)
-                  }
+                  onClick={() => navigate(-1)}
                   className="inline-flex items-center justify-center gap-2 rounded-[1.2rem] border border-[#e9dfd1] bg-white px-5 py-4 text-sm font-bold text-slate-700 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
                 >
-                  <RefreshCcw
-                    size={16}
-                  />
-
+                  <RefreshCcw size={16} />
                   Retry Checkout
                 </button>
               )}

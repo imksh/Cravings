@@ -63,7 +63,6 @@ const PartnerProfile = () => {
 
   const editRestaurant = async (data) => {
     try {
-      
       const res = await api.put(
         `/partner/updateRestaurant/${restaurant._id}`,
         data,

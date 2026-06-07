@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../../config/Api";
+import api from "../../config/api";
 import { IoClose } from "react-icons/io5";
 import { toast } from "react-hot-toast";
 import { motion } from "motion/react";

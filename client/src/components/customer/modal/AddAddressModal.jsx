@@ -100,7 +100,7 @@ const AddAddressModal = ({ open, onClose }) => {
 
       console.log(error);
     } finally {
-        onClose();
+      onClose();
     }
   };
 

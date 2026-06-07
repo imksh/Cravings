@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import Lottie from "lottie-react";
 import celebrate from "../assets/animations/celebrate.json";
-import api from "../config/Api";
+import api from "../config/api";
 import transparentLogo from "../assets/images/transparentLogo.png";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
