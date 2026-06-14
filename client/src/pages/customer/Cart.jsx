@@ -206,12 +206,12 @@ const Cart = () => {
   const eta = useMemo(() => {
     return calculateETA(
       {
-        lat: cartRestaurant.geoLocation.coordinates[1],
-        lon: cartRestaurant.geoLocation.coordinates[0],
+        lat: cartRestaurant?.geoLocation?.coordinates[1],
+        lon: cartRestaurant?.geoLocation?.coordinates[0],
       },
       {
-        lat: selectedAddress.geoLocation.coordinates[1],
-        lon: selectedAddress.geoLocation.coordinates[0],
+        lat: selectedAddress?.geoLocation?.coordinates[1],
+        lon: selectedAddress?.geoLocation?.coordinates[0],
       },
     );
   }, [cartRestaurant, selectedAddress]);
