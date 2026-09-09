@@ -7,6 +7,8 @@ import { IoPersonOutline } from "react-icons/io5";
 import { MdOutlineEmail } from "react-icons/md";
 import { FiPhone } from "react-icons/fi";
 
+import PublicFooter from "../components/PublicFooter";
+
 //Lottie
 import pizza from "../assets/animations/pizza.json";
 import pizzaOpening from "../assets/animations/pizzaOpening.json";
@@ -26,186 +28,39 @@ import LandingFood from "../components/LandingFood";
 import Testimonials from "../components/Testimonials";
 import useWindowSize from "../hooks/useWindowSize";
 import { useNavigate } from "react-router-dom";
-
-const menuItem = [
-  // ---------------- BREAKFAST ----------------
-  {
-    id: 1,
-    category: "Breakfast",
-    title: "Cheese Omelette",
-    description: "Fluffy eggs with cheddar",
-    price: 18.5,
-    rating: 4.5,
-    reviews: "9k Reviews",
-    image: "1",
-  },
-  {
-    id: 2,
-    category: "Breakfast",
-    title: "Butter Croissant",
-    description: "Fresh baked pastry",
-    price: 14.25,
-    rating: 4.3,
-    reviews: "7k Reviews",
-    image: "2",
-  },
-  {
-    id: 3,
-    category: "Breakfast",
-    title: "Pancake Stack",
-    description: "Honey maple syrup",
-    price: 22.9,
-    rating: 4.6,
-    reviews: "11k Reviews",
-    image: "3",
-  },
-  {
-    id: 4,
-    category: "Breakfast",
-    title: "Avocado Toast",
-    description: "Fresh avocado spread",
-    price: 19.75,
-    rating: 4.4,
-    reviews: "8k Reviews",
-    image: "4",
-  },
-
-  // ---------------- LUNCH ----------------
-  {
-    id: 5,
-    category: "Lunch",
-    title: "Pizza Smoked Cheese",
-    description: "Spicy cheese sauce",
-    price: 62.25,
-    rating: 4.0,
-    reviews: "12k Reviews",
-    image: "4",
-  },
-  {
-    id: 6,
-    category: "Lunch",
-    title: "Baguette French Ziti",
-    description: "Salty tomato sauce",
-    price: 34.4,
-    rating: 4.2,
-    reviews: "14k Reviews",
-    image: "5",
-  },
-  {
-    id: 7,
-    category: "Lunch",
-    title: "Hot Dog Slice",
-    description: "Medium gribche sauce",
-    price: 68.35,
-    rating: 4.4,
-    reviews: "16k Reviews",
-    image: "6",
-  },
-  {
-    id: 8,
-    category: "Lunch",
-    title: "French Bread Crust",
-    description: "Extra mojo sauce",
-    price: 86.3,
-    rating: 4.6,
-    reviews: "18k Reviews",
-    image: "7",
-  },
-
-  // ---------------- DINNER ----------------
-  {
-    id: 9,
-    category: "Dinner",
-    title: "Grilled Chicken Bowl",
-    description: "Herb grilled chicken",
-    price: 92.5,
-    rating: 4.7,
-    reviews: "22k Reviews",
-    image: "9",
-  },
-  {
-    id: 10,
-    category: "Dinner",
-    title: "Creamy Pasta Alfredo",
-    description: "Rich parmesan sauce",
-    price: 74.9,
-    rating: 4.6,
-    reviews: "19k Reviews",
-    image: "10",
-  },
-  {
-    id: 11,
-    category: "Dinner",
-    title: "BBQ Chicken Pizza",
-    description: "Smoky barbecue glaze",
-    price: 88.6,
-    rating: 4.5,
-    reviews: "17k Reviews",
-    image: "4",
-  },
-  {
-    id: 12,
-    category: "Dinner",
-    title: "Veggie Rice Bowl",
-    description: "Fresh seasonal veggies",
-    price: 64.2,
-    rating: 4.3,
-    reviews: "13k Reviews",
-    image: "11",
-  },
-
-  // ---------------- DESSERTS ----------------
-  {
-    id: 13,
-    category: "Desserts",
-    title: "Chocolate Lava Cake",
-    description: "Molten chocolate core",
-    price: 28.75,
-    rating: 4.8,
-    reviews: "30k Reviews",
-    image: "12",
-  },
-  {
-    id: 14,
-    category: "Desserts",
-    title: "Strawberry Ice Cream",
-    description: "Fresh berry scoop",
-    price: 16.9,
-    rating: 4.4,
-    reviews: "11k Reviews",
-    image: "13",
-  },
-  {
-    id: 15,
-    category: "Desserts",
-    title: "Blueberry cake",
-    description: "Creamy cheese filling",
-    price: 32.5,
-    rating: 4.7,
-    reviews: "21k Reviews",
-    image: "14",
-  },
-  {
-    id: 16,
-    category: "Desserts",
-    title: "Choco Donut",
-    description: "Soft donut with glaze",
-    price: 14.2,
-    rating: 4.2,
-    reviews: "9k Reviews",
-    image: "15",
-  },
-];
-
-const menuTabs = ["Breakfast", "Lunch", "Dinner", "Desserts"];
+import api from "../config/api";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Landing = () => {
   const size = useWindowSize();
   const [search, setSearch] = useState("");
   const [curr, setCurr] = useState("");
   const pizzaRef = useRef();
-  const [currMenu, setCurrMenu] = useState("Breakfast");
+  const [currMenu, setCurrMenu] = useState("");
+  const [menuItems, setMenuItems] = useState([]);
+  const [menuTabs, setMenuTabs] = useState([]);
+  const [isLoadingMenu, setIsLoadingMenu] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const res = await api.get("/public/menu?limit=50");
+        if (res.data?.data) {
+          const items = res.data.data;
+          setMenuItems(items);
+          const categories = [...new Set(items.map((i) => i.category))];
+          setMenuTabs(categories);
+          if (categories.length > 0) setCurrMenu(categories[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching menu:", error);
+      } finally {
+        setIsLoadingMenu(false);
+      }
+    };
+    fetchMenu();
+  }, []);
 
   useEffect(() => {
     if (!curr) return;
@@ -219,7 +74,7 @@ const Landing = () => {
 
   return (
     <div className="overflow-auto hide-scrollbar bg-gradient">
-      <div className="px-[7.5%] gap-8 sm:gap-0  grid grid-cols-1 sm:grid-cols-2 justify-between items-center min-h-[85dvh]">
+      <div className="px-[7.5%] gap-8 sm:gap-0  grid grid-cols-1 grid-rows-[1fr_3fr] md:grid-rows-1 sm:grid-cols-2 justify-between items-center min-h-dvh">
         <motion.div
           initial={{ opacity: 0, x: -100 }}
           animate={{ opacity: 1, x: 0 }}
@@ -228,7 +83,7 @@ const Landing = () => {
             ease: [0.22, 1, 0.36, 1],
             delay: 0.2,
           }}
-          className="flex flex-col gap-1 order-2 sm:order-1 "
+          className="flex flex-col gap-1 order-2 md:order-1 "
         >
           <div className="flex items-center relative w-fit">
             <h2 className="text-2xl md:text-6xl font-extrabold ">
@@ -351,12 +206,12 @@ const Landing = () => {
             ease: [0.22, 1, 0.36, 1],
             delay: 0.2,
           }}
-          className="flex items-center sm:justify-baseline justify-center relative order-1 sm:order-2  "
+          className="flex items-center sm:justify-baseline justify-center relative  order-1 md:order-2"
         >
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="relative md:absolute -left-8 md:-left-16"
+            className="relative md:absolute -left-8 md:-left-16 translate-y-1/2 md:translate-y-0"
           >
             <Lottie
               animationData={delivery}
@@ -369,6 +224,7 @@ const Landing = () => {
 
       {/* How we deliver section */}
       <motion.div
+        id="services"
         initial={{ scale: 0.7, opacity: 0.5 }}
         whileInView={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
@@ -504,6 +360,7 @@ const Landing = () => {
 
       {/* Menu */}
       <motion.div
+        id="menu"
         initial={{ scale: 0.7, opacity: 0.5 }}
         whileInView={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
@@ -514,7 +371,7 @@ const Landing = () => {
           <h2 className="text-3xl font-bold ">
             Our Best <span className="text-(--primary)">Menu</span>
           </h2>
-          <div className="grid pt-8 md:pt-0 grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 md:gap-2 lg:gap-8">
+          <div className="flex flex-wrap pt-8 md:pt-0 gap-4 sm:gap-6 md:gap-4 lg:gap-8 justify-center md:justify-end">
             {menuTabs.map((item, indx) => (
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -533,17 +390,29 @@ const Landing = () => {
           </div>
         </div>
         <div className="grid  sm:grid-cols-2 lg:grid-cols-4 gap-24 sm:gap-12 mt-20 p-8">
-          {menuItem
-            .filter((i) => i.category === currMenu)
-            .map((item) => (
-              <div>
-                <LandingFood item={item} />
-              </div>
-            ))}
+          {isLoadingMenu ? (
+            <div className="col-span-full flex justify-center items-center py-20">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1 }}
+              >
+                <AiOutlineLoading3Quarters className="w-10 h-10 text-orange-500" />
+              </motion.div>
+            </div>
+          ) : (
+            menuItems
+              .filter((i) => i.category === currMenu)
+              .map((item) => (
+                <div key={item._id}>
+                  <LandingFood item={item} />
+                </div>
+              ))
+          )}
         </div>
       </motion.div>
 
       <motion.div
+        id="testimonials"
         initial={{ scale: 0.7, opacity: 0.5 }}
         whileInView={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
@@ -558,7 +427,7 @@ const Landing = () => {
         whileInView={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
         viewport={{ once: true, amount: 0.2, margin: "-10px" }}
-        className="my-16 bg-(--primary)  pb-0 grid grid-cols-1 sm:grid-cols-2 px-[7.5%]"
+        className="mt-16 md:pb-0 bg-(--primary)  pb-0 grid grid-cols-1 sm:grid-cols-2 px-[7.5%]"
       >
         <div className="text-white w-fit order-2 sm:order-1 relative flex justify-between flex-col pt-24">
           <div>
@@ -619,9 +488,7 @@ const Landing = () => {
         </div>
       </motion.div>
 
-      <div className="px-[7.5%] mt-16 ">
-        <Footer />
-      </div>
+      <PublicFooter rounded={false} />
     </div>
   );
 };

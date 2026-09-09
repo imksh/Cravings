@@ -89,6 +89,7 @@ const seedDatabase = async () => {
 
       addresses: [
         {
+          id: "HOME123",
           title: "Home",
           name:"",
           address: "City Center Road",
@@ -258,6 +259,7 @@ const seedDatabase = async () => {
     /* ---------------------------------------------------------------------- */
 
     await Order.create({
+      orderId: "ORD-123456",
       customer: customerUser._id,
 
       restaurant: restaurant._id,
@@ -266,7 +268,7 @@ const seedDatabase = async () => {
 
       items: [
         {
-          menuItem: menuItems[0]._id,
+          menu: menuItems[0]._id,
 
           quantity: 2,
 
@@ -274,7 +276,7 @@ const seedDatabase = async () => {
         },
 
         {
-          menuItem: menuItems[2]._id,
+          menu: menuItems[2]._id,
 
           quantity: 1,
 

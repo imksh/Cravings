@@ -5,6 +5,9 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import compression from "compression";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import connectDB from "./src/config/db.js";
 import initializeSocket from "./src/config/socket.js";
 import cloudinary from "./src/config/cloudinary.js";
@@ -25,6 +28,15 @@ app.use(
     credentials: true,
   }),
 );
+app.use(helmet());
+app.use(compression());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100,
+});
+app.use("/api", limiter);
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));

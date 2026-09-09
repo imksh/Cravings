@@ -59,21 +59,23 @@ const Login = () => {
         localStorage.setItem("CravingsEmail", data.email);
       }
       handleReset(e);
-      switch (res.role) {
-        case "rider":
-          navigate("/rider");
-          break;
-        case "customer":
-          navigate("/customer");
-          break;
-        case "partner":
-          navigate("/partner");
-          break;
-        case "admin":
-          navigate("/admin");
-          break;
-        default:
-          break;
+      if (res && res.role) {
+        switch (res.role) {
+          case "rider":
+            navigate("/rider");
+            break;
+          case "customer":
+            navigate("/customer");
+            break;
+          case "partner":
+            navigate("/partner");
+            break;
+          case "admin":
+            navigate("/admin");
+            break;
+          default:
+            break;
+        }
       }
       setShowAnimation(true);
     } catch (error) {
@@ -91,49 +93,24 @@ const Login = () => {
 
   return (
     <>
-      <div className="min-h-[90dvh] w-full flex items-center justify-center bg-gradient py-12 px-4">
+      <div className="min-h-screen w-full flex items-center justify-center bg-gradient md:pt-20 md:pb-4 px-4 relative overflow-hidden">
+        {/* Background Glowing Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: "2s" }}></div>
+        <div className="absolute -bottom-8 left-1/3 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: "4s" }}></div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-md"
+          className="w-full max-w-xl relative z-10"
         >
-          <div className="text-center mb-10">
-            <motion.div
-              whileHover={{ scale: 1.08 }}
-              transition={{ type: "spring", stiffness: 400 }}
-              className="inline-block mb-6"
-            >
-              <img
-                src={transparentLogo}
-                alt="Cravings logo"
-                className="w-24 h-24"
-              />
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-4xl md:text-5xl font-bold text-gray-900 mb-3"
-            >
-              Welcome Back
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-gray-600 text-lg"
-            >
-              Sign in to continue your food journey
-            </motion.p>
-          </div>
-
           <motion.form
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
             onSubmit={handleSubmit}
-            className="bg-white rounded-3xl shadow-2xl p-8 md:p-10 space-y-6"
+            className="bg-white/60 backdrop-blur-xl border border-white/50 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-8 md:p-10 space-y-6"
           >
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -150,10 +127,10 @@ const Login = () => {
                 value={data.email}
                 onChange={handleChange}
                 disabled={isLoading}
-                className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all duration-200 bg-white disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none ${
+                className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all duration-200 bg-white/50 disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none ${
                   errors.email
-                    ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-200"
-                    : "border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                    ? "border-red-500 focus:border-red-500 focus:ring-4 focus:ring-red-500/20"
+                    : "border-white hover:border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20"
                 }`}
                 placeholder="you@example.com"
               />
@@ -185,10 +162,10 @@ const Login = () => {
                   value={data.password}
                   onChange={handleChange}
                   disabled={isLoading}
-                  className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all duration-200 bg-white disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none ${
+                  className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all duration-200 bg-white/50 disabled:bg-gray-50 disabled:cursor-not-allowed focus:outline-none ${
                     errors.password
-                      ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-200"
-                      : "border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                      ? "border-red-500 focus:border-red-500 focus:ring-4 focus:ring-red-500/20"
+                      : "border-white hover:border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20"
                   }`}
                   placeholder="••••••••"
                 />
@@ -270,12 +247,12 @@ const Login = () => {
               )}
             </motion.button>
 
-            <div className="relative py-4">
+            <div className="relative ">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center">
-                <span className="px-3 bg-white text-sm text-gray-500 font-medium">
+                <span className="px-3  text-sm text-gray-500 font-medium">
                   New to Cravings?
                 </span>
               </div>

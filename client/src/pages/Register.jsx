@@ -144,25 +144,25 @@ const Register = () => {
 
   return (
     <>
-      <div className="min-h-[90dvh] w-full flex items-center justify-center bg-gradient py-12 px-4">
+      <div className="min-h-screen w-full flex items-center justify-center bg-gradient md:pt-20 md:pb-4 px-4 relative overflow-hidden">
+        {/* Background Glowing Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+        <div
+          className="absolute top-1/3 right-1/4 w-96 h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute -bottom-8 left-1/3 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+          style={{ animationDelay: "4s" }}
+        ></div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-2xl"
+          className="w-full max-w-2xl relative z-10"
         >
           <div className="text-center mb-10">
-            <motion.div
-              whileHover={{ scale: 1.08 }}
-              transition={{ type: "spring", stiffness: 400 }}
-              className="inline-block mb-6"
-            >
-              <img
-                src={transparentLogo}
-                alt="Cravings logo"
-                className="w-24 h-24"
-              />
-            </motion.div>
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -201,7 +201,7 @@ const Register = () => {
 
           <motion.form
             onSubmit={handleSubmit}
-            className="bg-white rounded-3xl shadow-2xl p-8 md:p-10"
+            className="bg-white/60 backdrop-blur-xl border border-white/50 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-8 md:p-10"
           >
             <AnimatePresence mode="wait">
               {currentStep === 1 && (
@@ -231,8 +231,8 @@ const Register = () => {
                         whileTap={{ scale: 0.95 }}
                         className={`relative p-6 rounded-2xl border-2 transition-all overflow-hidden group ${
                           data.role === role.id
-                            ? "border-orange-500 bg-linear-to-br from-orange-50 to-yellow-50 shadow-lg"
-                            : "border-gray-200 bg-white hover:border-orange-300"
+                            ? "border-orange-500 bg-orange-50/70 shadow-lg"
+                            : "border-gray-200/50 bg-white/50 hover:border-orange-300"
                         }`}
                       >
                         <div className="relative z-10">
@@ -302,11 +302,11 @@ const Register = () => {
                       name="name"
                       value={data.name}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all ${
+                      className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all bg-white/50 focus:outline-none ${
                         errors.name
-                          ? "border-red-500 focus:ring-2 focus:ring-red-200"
-                          : "border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
-                      } focus:outline-none`}
+                          ? "border-red-500 focus:ring-4 focus:ring-red-500/20"
+                          : "border-white hover:border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20"
+                      }`}
                       placeholder="John Doe"
                     />
                     {errors.name && (
@@ -334,11 +334,11 @@ const Register = () => {
                       name="email"
                       value={data.email}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all ${
+                      className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all bg-white/50 focus:outline-none ${
                         errors.email
-                          ? "border-red-500 focus:ring-2 focus:ring-red-200"
-                          : "border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
-                      } focus:outline-none`}
+                          ? "border-red-500 focus:ring-4 focus:ring-red-500/20"
+                          : "border-white hover:border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20"
+                      }`}
                       placeholder="you@example.com"
                     />
                     {errors.email && (
@@ -371,11 +371,11 @@ const Register = () => {
                         value={data.phone}
                         onChange={handleChange}
                         maxLength="10"
-                        className={`flex-1 px-4 py-3.5 rounded-r-xl border-2 transition-all ${
+                        className={`flex-1 px-4 py-3.5 rounded-r-xl border-2 transition-all bg-white/50 focus:outline-none ${
                           errors.phone
-                            ? "border-red-500 focus:ring-2 focus:ring-red-200"
-                            : "border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
-                        } focus:outline-none`}
+                            ? "border-red-500 focus:ring-4 focus:ring-red-500/20"
+                            : "border-white border-l-gray-200 hover:border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20"
+                        }`}
                         placeholder="9876543210"
                       />
                     </div>
@@ -423,11 +423,11 @@ const Register = () => {
                         name="password"
                         value={data.password}
                         onChange={handleChange}
-                        className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all ${
+                        className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all bg-white/50 focus:outline-none ${
                           errors.password
-                            ? "border-red-500 focus:ring-2 focus:ring-red-200"
-                            : "border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
-                        } focus:outline-none`}
+                            ? "border-red-500 focus:ring-4 focus:ring-red-500/20"
+                            : "border-white hover:border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20"
+                        }`}
                         placeholder="••••••••"
                       />
                       <button
@@ -510,11 +510,11 @@ const Register = () => {
                           if (errors.confirm)
                             setErrors((p) => ({ ...p, confirm: "" }));
                         }}
-                        className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all ${
+                        className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all bg-white/50 focus:outline-none ${
                           errors.confirm
-                            ? "border-red-500 focus:ring-2 focus:ring-red-200"
-                            : "border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
-                        } focus:outline-none`}
+                            ? "border-red-500 focus:ring-4 focus:ring-red-500/20"
+                            : "border-white hover:border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20"
+                        }`}
                         placeholder="••••••••"
                       />
                       <button

@@ -28,9 +28,9 @@ export const newContact = async (req, res, next) => {
 
 export const GetAllRestaurants = async (req, res, next) => {
   try {
-    const restaurants = await User.find({ role: "manager" }).select(
-      "-password",
-    );
+    const restaurants = await User.find({ role: "manager" })
+      .select("-password")
+      .lean();
 
     res.status(200).json(restaurants);
   } catch (error) {
@@ -51,7 +51,9 @@ export const GetRetaurantMenuData = async (req, res, next) => {
 
     const restaurantMenuData = await Menu.find({
       resturantID: id,
-    }).sort({ updatedAt: -1 });
+    })
+      .sort({ updatedAt: -1 })
+      .lean();
 
     console.log(restaurantMenuData);
 
@@ -71,7 +73,7 @@ export const GetMenuItem = async (req, res, next) => {
       });
     }
 
-    const menuItem = await Menu.findById(id);
+    const menuItem = await Menu.findById(id).lean();
     res.status(200).json(menuItem);
   } catch (error) {
     console.log("Error in menu item: ", error);
@@ -99,7 +101,7 @@ export const getNearbyRestaurants = async (req, res, next) => {
           $maxDistance: 20000,
         },
       },
-    });
+    }).lean();
 
     res.status(200).json({
       message: "Nearby Restaurants Fetched Successfully",
@@ -121,7 +123,7 @@ export const getRestaurant = async (req, res, next) => {
       return next(error);
     }
 
-    const restaurant = await Restaurant.findById(id);
+    const restaurant = await Restaurant.findById(id).lean();
 
     if (!restaurant) {
       const error = new Error("Restaurant not found");
@@ -149,9 +151,9 @@ export const getRestaurantMenu = async (req, res, next) => {
       return next(error);
     }
 
-    const menuItems = await Menu.find({ restaurant: id }).sort({
-      createdAt: -1,
-    });
+    const menuItems = await Menu.find({ restaurant: id })
+      .sort({ createdAt: -1 })
+      .lean();
 
     res.status(200).json({
       message: "Menu Items Fetched Successfully",
@@ -171,7 +173,8 @@ export const getMenuItems = async (req, res, next) => {
     const menuItems = await Menu.find()
       .sort({ rating: -1 })
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit))
+      .lean();
 
     const totalItems = await Menu.countDocuments();
 

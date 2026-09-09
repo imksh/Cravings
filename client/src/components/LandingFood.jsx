@@ -28,9 +28,9 @@ const LandingFood = ({ item }) => {
         className="relative w-full"
       >
         <motion.img
-          animate={curr === item.title ? { x: [-15, 0, 15, 0] } : { x: 0 }}
+          animate={curr === item.name ? { x: [-15, 0, 15, 0] } : { x: 0 }}
           transition={{ duration: 0.3 }}
-          src={`/images/food-${item?.image}.png`}
+          src={item?.images?.[0]?.url || "/images/food-1.png"}
           alt=""
           className="w-30 max-h-23 object-center object-contain absolute -top-12 left-[50%] -translate-x-[50%]"
         />
@@ -40,13 +40,13 @@ const LandingFood = ({ item }) => {
             <p className="flex text-center gap-2 items-center text-[12px]">
               <FaStar size={20} color="yellow" />{" "}
               <span className="text-gray-500">
-                {item?.rating} ({item?.reviews})
+                {item?.rating || 0} ({item?.totalReviews || 0} Reviews)
               </span>
             </p>
           </div>
-          <h2 className="text-xl font-bold text-center  whitespace-nowrap">{item?.title}</h2>
+          <h2 className="text-xl font-bold text-center  whitespace-nowrap">{item?.name}</h2>
           <p className="text-center text-gray-500 text-[12px]">
-            {item?.description}
+            {item?.description?.substring(0, 40) || ""}...
           </p>
           <h3 className="text-2xl font-bold text-center text-(--primary)">
             ₹{item?.price}

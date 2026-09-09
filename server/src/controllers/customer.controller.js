@@ -176,7 +176,8 @@ export const getCustomerOrders = async (req, res) => {
       .populate("items.menu", "name price")
       .sort({ createdAt: -1 })
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit))
+      .lean();
 
     const total = await Order.countDocuments({ customer: userId });
 
@@ -205,7 +206,8 @@ export const getOrder = async (req, res) => {
 
     const order = await Order.findOne({ _id: orderId, customer: userId })
       .populate("restaurant", "name address")
-      .populate("items.menu", "name price description images");
+      .populate("items.menu", "name price description images")
+      .lean();
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
@@ -232,7 +234,8 @@ export const getActiveOrders = async (req, res) => {
       status: { $in: activeStatuses },
     }).sort({ createdAt: -1 })
       .populate("restaurant", "name address")
-      .populate("items.menu", "name price images description");
+      .populate("items.menu", "name price images description")
+      .lean();
 
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: "No active orders found" });

@@ -55,13 +55,13 @@ const PublicHeader = () => {
       initial={{ opacity: 0, y: -100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2, ease: "easeInOut" }}
-      className={`fixed top-0 left-0 w-full z-99 min-h-[13dvh] flex flex-col justify-end   header-gradient transition-transform duration-300 ease-in-out ${
+      className={`fixed top-2 left-0 w-full z-99 flex flex-col justify-center pt-4 pb-2 transition-transform duration-300 ease-in-out ${
         showHeader ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       {size.width > 500 && (
         <div
-          className={`w-fit absolute -top-2.5 left-[8.5vw] ${
+          className={`w-fit absolute -top-5 left-[8.5vw] ${
             size.width > 500 ? "ride-x" : "ride-phone-x"
           } `}
           aria-hidden
@@ -69,7 +69,7 @@ const PublicHeader = () => {
           <React.Suspense fallback={null}>
             <LottieLazy
               animationData={rider}
-              className="w-10 hover:scale-110 duration-100"
+              className="w-12 hover:scale-110 duration-100"
               loop
               autoplay
             />
@@ -77,13 +77,13 @@ const PublicHeader = () => {
         </div>
       )}
       <motion.div
-        whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.4 }}
-        className={`z-99 bg-(--primary) text-black font-bold flex flex-col px-4 md:px-16 justify-center w-[90%] md:w-[85%] mx-auto  fixed top-5  left-[50%] -translate-x-[50%] rounded-4xl `}
+        whileHover={{ scale: 1.01 }}
+        transition={{ duration: 0.3 }}
+        className={`z-99 bg-white/70 backdrop-blur-md border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-gray-800 font-bold flex flex-col px-4 md:px-8 justify-center w-[95%] max-w-[1200px] mx-auto rounded-3xl`}
         onClick={(e) => e.stopPropagation()}
       >
         <div
-          className={`flex   justify-between  items-center h-[10dvh] z-99 bg-(--primary) rounded-4xl w-full`}
+          className={`flex justify-between items-center h-[70px] md:h-[80px] z-99 rounded-3xl w-full`}
         >
           <Link to="/" aria-label="Cravings home">
             <motion.button
@@ -93,18 +93,17 @@ const PublicHeader = () => {
               <img
                 src={transparentLogo}
                 alt="Cravings logo"
-                className="w-24 object-cover object-center invert-100"
+                className="w-24 object-contain"
               />
             </motion.button>
           </Link>
 
-          <div className="hidden md:flex list-none gap-3 items-center  my-auto absolute left-[50%] -translate-x-[50%]">
+          <div className="hidden md:flex list-none gap-6 items-center absolute left-[50%] -translate-x-[50%]">
             <Link to="/">
               <motion.button
-                whileTap={{ scale: 0.9 }}
-                transition={{ duration: 0.9 }}
-                className={`cursor-pointer  hover:text-(--accent) ${
-                  location === "/" ? "text-(--secondary)" : "text-white"
+                whileTap={{ scale: 0.95 }}
+                className={`cursor-pointer transition-colors ${
+                  location === "/" ? "text-orange-600" : "text-gray-700 hover:text-orange-500"
                 }`}
               >
                 Home
@@ -113,10 +112,9 @@ const PublicHeader = () => {
 
             <Link to="/about">
               <motion.button
-                whileTap={{ scale: 0.9 }}
-                transition={{ duration: 0.9 }}
-                className={`cursor-pointer  hover:text-(--accent) ${
-                  location === "/about" ? "text-(--secondary)" : "text-white"
+                whileTap={{ scale: 0.95 }}
+                className={`cursor-pointer transition-colors ${
+                  location === "/about" ? "text-orange-600" : "text-gray-700 hover:text-orange-500"
                 }`}
               >
                 About
@@ -124,10 +122,9 @@ const PublicHeader = () => {
             </Link>
             <Link to="/contact">
               <motion.button
-                whileTap={{ scale: 0.9 }}
-                transition={{ duration: 0.9 }}
-                className={`cursor-pointer hover:text-(--accent) ${
-                  location === "/contact" ? "text-(--secondary)" : "text-white"
+                whileTap={{ scale: 0.95 }}
+                className={`cursor-pointer transition-colors ${
+                  location === "/contact" ? "text-orange-600" : "text-gray-700 hover:text-orange-500"
                 }`}
               >
                 Contact
@@ -135,12 +132,11 @@ const PublicHeader = () => {
             </Link>
           </div>
 
-          <div className="hidden md:flex list-none gap-3 items-center  my-auto">
+          <div className="hidden md:flex list-none gap-4 items-center">
             <motion.button
-              whileTap={{ scale: 0.9 }}
-              transition={{ duration: 0.9 }}
-              className={`cursor-pointer  hover:text-(--accent) ${
-                location === "/login" ? "text-(--secondary)" : "text-white"
+              whileTap={{ scale: 0.95 }}
+              className={`cursor-pointer font-semibold transition-colors ${
+                location === "/login" ? "text-orange-600" : "text-gray-700 hover:text-orange-500"
               }`}
               onClick={() => navigate("/login")}
             >
@@ -148,18 +144,15 @@ const PublicHeader = () => {
             </motion.button>
 
             <motion.button
-              whileTap={{ scale: 0.9 }}
-              transition={{ duration: 0.9 }}
-              className={`cursor-pointer  hover:text-(--accent) ${
-                location === "/register" ? "text-(--secondary)" : "text-white"
-              }`}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 transition-colors shadow-md shadow-orange-500/20"
               onClick={() => navigate("/register")}
             >
               Register
             </motion.button>
           </div>
 
-          <div className="flex md:hidden text-white">
+          <div className="flex md:hidden text-gray-800">
             <motion.button
               whileTap={{ scale: 0.8 }}
               onClick={(e) => {
@@ -169,9 +162,10 @@ const PublicHeader = () => {
               aria-label={showHeaderMenu ? "Close menu" : "Open menu"}
               aria-expanded={showHeaderMenu}
               aria-controls="public-header-menu"
+              className="p-2"
             >
               {showHeaderMenu ? (
-                <IoCloseSharp size={30} />
+                <IoCloseSharp size={28} />
               ) : (
                 <GiHamburgerMenu size={24} />
               )}
@@ -192,7 +186,7 @@ const PublicHeader = () => {
               transition={{ duration: 0.5 }}
             >
               <motion.button
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   setShowHeaderMenu(false);
                   navigate("/");
@@ -200,46 +194,45 @@ const PublicHeader = () => {
                 ref={firstMenuItemRef}
                 tabIndex={0}
                 role="menuitem"
-                className={`cursor-pointer hover:text-(--accent) w-full flex justify-baseline ${
-                  location === "/" ? "text-(--secondary)" : "text-white"
+                className={`cursor-pointer w-full text-left py-2 transition-colors ${
+                  location === "/" ? "text-orange-600" : "text-gray-700 hover:text-orange-500"
                 }`}
               >
                 Home
               </motion.button>
 
               <motion.button
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   setShowHeaderMenu(false);
                   navigate("/about");
                 }}
                 role="menuitem"
-                className={`cursor-pointer  hover:text-(--accent) w-full flex justify-baseline ${
-                  location === "/about" ? "text-(--secondary)" : "text-white"
+                className={`cursor-pointer w-full text-left py-2 transition-colors ${
+                  location === "/about" ? "text-orange-600" : "text-gray-700 hover:text-orange-500"
                 }`}
               >
                 About
               </motion.button>
 
               <motion.button
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   setShowHeaderMenu(false);
                   navigate("/contact");
                 }}
                 role="menuitem"
-                className={`cursor-pointer hover:text-(--accent) w-full flex justify-baseline ${
-                  location === "/contact" ? "text-(--secondary)" : "text-white"
+                className={`cursor-pointer w-full text-left py-2 transition-colors ${
+                  location === "/contact" ? "text-orange-600" : "text-gray-700 hover:text-orange-500"
                 }`}
               >
                 Contact
               </motion.button>
 
-              <div className="md:hidden flex  my-2 list-none gap-3 items-center">
+              <div className="md:hidden flex flex-col mt-4 gap-3 w-full border-t border-gray-200 pt-4">
                 <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.9 }}
-                  className="cursor-pointer text-white px-4 py-2 rounded-lg bg-(--secondary) hover:bg-(--accent)"
+                  whileTap={{ scale: 0.95 }}
+                  className="cursor-pointer text-gray-800 font-semibold w-full py-3 rounded-xl border border-gray-200 hover:bg-gray-50"
                   onClick={() => {
                     navigate("/login");
                     setShowHeaderMenu(false);
@@ -249,9 +242,8 @@ const PublicHeader = () => {
                 </motion.button>
 
                 <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.9 }}
-                  className="cursor-pointer text-white px-4 py-2 rounded-lg bg-(--secondary) hover:bg-(--accent)"
+                  whileTap={{ scale: 0.95 }}
+                  className="cursor-pointer text-white font-semibold w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 shadow-md shadow-orange-500/20"
                   onClick={() => {
                     navigate("/register");
                     setShowHeaderMenu(false);

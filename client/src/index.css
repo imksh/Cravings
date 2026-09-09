@@ -48,21 +48,9 @@ h4 {
 .bg-gradient {
   background: linear-gradient(
     135deg,
-    #fff5f0 0%,
-    #ffe6dc 30%,
-    #ffffff 60%,
+    #fff3ec 0%,
+    #fffdf9 40%,
     #ffffff 100%
-  );
-}
-
-.header-gradient {
-  background-image: linear-gradient(
-    to bottom,
-    #ffe7dd,
-    #ffe9e0,
-    #ffebe3,
-    #ffede6,
-    #ffefe9
   );
 }
 

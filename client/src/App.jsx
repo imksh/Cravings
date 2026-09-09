@@ -1,48 +1,52 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
+const Login = React.lazy(() => import("./pages/Login"));
+const Home = React.lazy(() => import("./pages/Home"));
 import { Toaster } from "react-hot-toast";
-import Register from "./pages/Register";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Profile from "./pages/Profile";
+const Register = React.lazy(() => import("./pages/Register"));
+const About = React.lazy(() => import("./pages/About"));
+const Contact = React.lazy(() => import("./pages/Contact"));
+const Profile = React.lazy(() => import("./pages/Profile"));
 import { useAuthStore } from "./store/useAuthStore";
-import Landing from "./pages/Landing";
+const Landing = React.lazy(() => import("./pages/Landing"));
+const Promo = React.lazy(() => import("./pages/Promo"));
+const Terms = React.lazy(() => import("./pages/Terms"));
+const Privacy = React.lazy(() => import("./pages/Privacy"));
+const Cookie = React.lazy(() => import("./pages/Cookie"));
 import Lenis from "lenis";
 import useUiStore from "./store/useUiStore";
 import Loading from "./components/Loading";
 import ProtectedRoute from "./components/layouts/ProtectedRoute";
 import PublicLayout from "./components/layouts/PublicLayout";
 import CustomerLayout from "./components/layouts/CustomerLayout";
-import CustomerHome from "./pages/customer/CustomerHome";
-import Category from "./pages/customer/Category";
-import Restaurants from "./pages/customer/Restaurants";
-import Offers from "./pages/customer/Offers";
-import Menu from "./pages/customer/Menu";
-import Restaurant from "./pages/customer/Restaurant";
-import Cart from "./pages/customer/Cart";
+const CustomerHome = React.lazy(() => import("./pages/customer/CustomerHome"));
+const Category = React.lazy(() => import("./pages/customer/Category"));
+const Restaurants = React.lazy(() => import("./pages/customer/Restaurants"));
+const Offers = React.lazy(() => import("./pages/customer/Offers"));
+const Menu = React.lazy(() => import("./pages/customer/Menu"));
+const Restaurant = React.lazy(() => import("./pages/customer/Restaurant"));
+const Cart = React.lazy(() => import("./pages/customer/Cart"));
 import CustomerFooter from "./components/customer/CustomerFooter";
 import { Scroll } from "./components/Scroll";
-import CustomerProfile from "./pages/customer/CustomerProfile";
+const CustomerProfile = React.lazy(() => import("./pages/customer/CustomerProfile"));
 import FetchingLocationMap from "./components/FetchingLocationMap";
-import PartnerDashboard from "./pages/partner/PartnerDashboard";
+const PartnerDashboard = React.lazy(() => import("./pages/partner/PartnerDashboard"));
 import PartnerLayout from "./components/layouts/PartnerLayout";
-import PartnerProfile from "./pages/partner/PartnerProfile";
-import PartnerMenu from "./pages/partner/PartnerMenu";
-import PartnerOffers from "./pages/partner/PartnerOffers";
-import PartnerOrders from "./pages/partner/PartnerOrders";
+const PartnerProfile = React.lazy(() => import("./pages/partner/PartnerProfile"));
+const PartnerMenu = React.lazy(() => import("./pages/partner/PartnerMenu"));
+const PartnerOffers = React.lazy(() => import("./pages/partner/PartnerOffers"));
+const PartnerOrders = React.lazy(() => import("./pages/partner/PartnerOrders"));
 import ConfirmModal from "./components/modal/ConfirmModal";
-import MenuItem from "./pages/customer/MenuItem";
+const MenuItem = React.lazy(() => import("./pages/customer/MenuItem"));
 import { useSocket } from "./hooks/useSocket";
-import OrderStatusPage from "./pages/customer/OrderStatusPage";
-import CustomerOrder from "./pages/customer/CustomerOrder";
-import CustomerOrderPage from "./pages/customer/CustomerOrderPage";
-import RiderDashboard from "./pages/rider/RiderDashboard";
+const OrderStatusPage = React.lazy(() => import("./pages/customer/OrderStatusPage"));
+const CustomerOrder = React.lazy(() => import("./pages/customer/CustomerOrder"));
+const CustomerOrderPage = React.lazy(() => import("./pages/customer/CustomerOrderPage"));
+const RiderDashboard = React.lazy(() => import("./pages/rider/RiderDashboard"));
 import RiderLayout from "./components/layouts/RiderLayout";
-import RiderOrders from "./pages/rider/RiderOrders";
-import RiderEarnings from "./pages/rider/RiderEarnings";
-import RiderProfile from "./pages/rider/RiderProfile";
+const RiderOrders = React.lazy(() => import("./pages/rider/RiderOrders"));
+const RiderEarnings = React.lazy(() => import("./pages/rider/RiderEarnings"));
+const RiderProfile = React.lazy(() => import("./pages/rider/RiderProfile"));
 
 
 const App = () => {
@@ -58,25 +62,25 @@ const App = () => {
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
   const [fetchingLocation, setFetchingLocation] = useState(false);
 
-  // useEffect(() => {
-  //   const lenis = new Lenis({
-  //     duration: 1.2,
-  //     easing: (t) => 1 - Math.pow(1 - t, 3),
-  //     smooth: true,
-  //     smoothTouch: false,
-  //   });
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
+      smooth: true,
+      smoothTouch: false,
+    });
 
-  //   function raf(time) {
-  //     lenis.raf(time);
-  //     requestAnimationFrame(raf);
-  //   }
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
 
-  //   requestAnimationFrame(raf);
+    requestAnimationFrame(raf);
 
-  //   return () => {
-  //     lenis.destroy();
-  //   };
-  // }, []);
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   useEffect(() => {
     const getLocation = async () => {
@@ -116,6 +120,10 @@ const App = () => {
             />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/promo" element={<Promo />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/cookie" element={<Cookie />} />
             <Route path="/profile" element={user ? <Profile /> : <Login />} />
             <Route path="/cart" element={user ? <Cart /> : <Login />} />
           </Route>

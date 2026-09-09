@@ -1,16 +1,15 @@
 import { Outlet } from "react-router-dom";
 import PublicHeader from "../PublicHeader";
-import PublicFooter from "../PublicFooter";
 
 const PublicLayout = () => {
   return (
-    <>
+    <div className="bg-gradient min-h-dvh flex flex-col">
       <PublicHeader />
-      <div className="mt-[13dvh]">
+      <div className="flex-1 pt-[40px]">
         <Outlet />
       </div>
-      <PublicFooter />
-    </>
+      
+    </div>
   );
 };
 
